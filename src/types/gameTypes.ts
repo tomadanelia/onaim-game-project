@@ -20,6 +20,7 @@ export interface BoardSquare{
     position: {x:number,y:number},
     prize: Prize|null,
     isBonus: boolean,
+    isStart?: boolean,
 }
 export interface GameState{
     currentPosition:number,

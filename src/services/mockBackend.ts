@@ -11,7 +11,7 @@ export default class MockBackendService{
        { cost: 50, multiplier: 5}
      ];
      private defaultPrizes:Prize[]= [
-        {position: 0, prizeValue: 0, prizeName: "startSquare"},
+        {position: 0, prizeValue: 40, prizeName: "chest"},
         {position: 1, prizeValue: 100, prizeName: "goldHeart"},
         {position: 2, prizeValue: 5, prizeName: "bronzeCoin"},
         {position: 3, prizeValue: 10, prizeName: "silverCoin"},
