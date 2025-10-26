@@ -7,6 +7,8 @@ async function startGame() {
     try {
         await gameApp.init();
         console.log('Game started successfully');
+        await gameApp.loadAssets();
+        gameApp.initGame();
     } catch (error) {
         console.error('Failed to initialize game:', error);
     }
