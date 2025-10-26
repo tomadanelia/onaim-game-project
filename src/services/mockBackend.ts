@@ -1,12 +1,16 @@
-import type { inititalDataResponse } from "../types/apiTypes";
+import type { inititalDataResponse, MakeSpinResponse } from "../types/apiTypes";
+import type { BetOption, Prize } from "../types/gameTypes";
 
-class MockBackendService{
+export default class MockBackendService{
 
-
-    getinitialData():inititalDataResponse{
-
-    const response:inititalDataResponse={
-     defaultPrizes: [
+     private balance:number=100;
+     private defaultFreeSpins:number=3;
+     private betOptions:BetOption[] = [
+       { cost: 10, multiplier: 1},
+       { cost: 20, multiplier: 2},
+       { cost: 50, multiplier: 5}
+     ];
+     private defaultPrizes:Prize[]= [
         {position: 0, prizeValue: 0, prizeName: "startSquare"},
         {position: 1, prizeValue: 100, prizeName: "goldHeart"},
         {position: 2, prizeValue: 5, prizeName: "bronzeCoin"},
@@ -21,8 +25,8 @@ class MockBackendService{
         {position: 13, prizeValue: 50, prizeName: "goldStar"},
         {position: 14, prizeValue: 100, prizeName: "chest2"},
         {position: 15, prizeValue: 60, prizeName: "silverHeart"},
-    ],
-    bonusPrizes: [
+    ];
+    private bonusPrizes:Prize[]= [
         {position: 0, prizeValue: 100, prizeName: "Gold Trophy"},
         {position: 1, prizeValue: 100, prizeName: "Gold Trophy"},
         {position: 2, prizeValue: 50, prizeName: "Silver Medal"},
@@ -38,15 +42,33 @@ class MockBackendService{
         {position: 14, prizeValue: 100, prizeName: "Gold Trophy"},
         {position: 15, prizeValue: 100, prizeName: "Gold Trophy"},
 
-    ],
-    freeSpins: 3,
-    betOptions: [
-        {cost: 10, multiplier: 1},
-        {cost: 20, multiplier: 2},
-        {cost: 50, multiplier: 5}
-    ],
-    balance: 1000,
+    ];
+    getinitialData():inititalDataResponse{
+
+    const response:inititalDataResponse={
+     defaultPrizes: this.defaultPrizes,
+    bonusPrizes: this.bonusPrizes,
+    freeSpins: this.defaultFreeSpins,
+    betOptions: this.betOptions,
+    balance: this.balance,
     }
     return response;
     }
+    makeSpin(betAmount: number, isFreespin: boolean): MakeSpinResponse {
+        const die1 = Math.floor(Math.random() * 6) + 1;
+        const die2 = Math.floor(Math.random() * 6) + 1;
+        const rollResult = die1 + die2;
+
+        if (!isFreespin) {
+            this.balance -= betAmount;
+        }
+
+       
+
+        return {
+            rollResult,
+            newBalance: this.balance,
+        };
+    }
+
 }

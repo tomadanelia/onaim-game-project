@@ -6,6 +6,7 @@ export interface Prize{
 position: number,
 prizeValue: number,
 prizeName: string,
+imageUrl?: string,
 }
 export interface GameConfig{
     defaultPrizes: Prize[],
