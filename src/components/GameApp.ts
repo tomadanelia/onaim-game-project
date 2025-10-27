@@ -3,6 +3,7 @@ import {Text} from 'pixi.js'
 import { apiService } from '../services/apiService';
 import { gameConfig } from '../config/gameConfig';
 import Board from './Board';
+import { BackgroundBoard } from '../background';
 export class GameApp {
     private app!: PIXI.Application;
     private board!:Board;
@@ -22,7 +23,7 @@ export class GameApp {
 
         
         document.body.appendChild(this.app.canvas);
-        
+        const back = new BackgroundBoard(this.app.canvas);
         console.log('Pixi Application initialized');
     }
 
