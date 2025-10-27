@@ -24,6 +24,7 @@ export class GameApp {
         
         document.body.appendChild(this.app.canvas);
         const back = new BackgroundBoard(this.app);
+        back.toggleBonusRound(false);
         console.log('Pixi Application initialized');
     }
 
