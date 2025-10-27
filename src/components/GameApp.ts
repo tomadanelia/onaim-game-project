@@ -4,9 +4,11 @@ import { apiService } from '../services/apiService';
 import { gameConfig } from '../config/gameConfig';
 import Board from './Board';
 import { BackgroundBoard } from '../background';
+import  Player from './Player';
 export class GameApp {
     private app!: PIXI.Application;
     private board!:Board;
+    private player!:Player;
 
     
 
@@ -14,8 +16,8 @@ export class GameApp {
         this.app = new PIXI.Application();
         
         await this.app.init({
-            width: 800,
-            height: 600,
+            width: window.innerWidth,
+            height: window.innerHeight,
             backgroundColor: 0x1a1a2e, 
             resolution: window.devicePixelRatio || 1,
             autoDensity: true,
@@ -97,5 +99,11 @@ async loadAssets(): Promise<void> {
     this.app.stage.addChild(this.board);
     this.board.x=(this.app.screen.width - this.board.width)/2;
     this.board.y=(this.app.screen.height - this.board.height)/2;
+
+    this.player = new Player();
+    const startPos=this.board.getSquarePosition(0);
+    this.player.setPosition(startPos.x, startPos.y);
+    this.board.addChild(this.player);
     }
+
 }

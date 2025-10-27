@@ -7,6 +7,10 @@ export default class Player extends PIXI.Container {
 
     const playerSprite = new PIXI.Sprite(playerTexture);
     this.addChild(playerSprite);
+    
+    playerSprite.width = 80;
+    playerSprite.height = 80;
+    playerSprite.anchor.set(0.5);
     playerSprite.x=0;
     playerSprite.y=0;
 
