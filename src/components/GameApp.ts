@@ -23,7 +23,7 @@ export class GameApp {
 
         
         document.body.appendChild(this.app.canvas);
-        const back = new BackgroundBoard(this.app.canvas);
+        const back = new BackgroundBoard(this.app);
         console.log('Pixi Application initialized');
     }
 
