@@ -1,40 +1,30 @@
-import { Application, Graphics } from "pixi.js";
-import { initDevtools } from "@pixi/devtools";
-
+import  { Application, Graphics,Text } from "pixi.js";
 export class BackgroundBoard {
-    public app: Application;
     private centerX: number;
     private centerY: number;
-    private circleRadius: number = 150;
+    private shapeSize: number = 100; 
     private background: Graphics;
     private rays: Graphics;
-    private circle: Graphics;
+    private shape: Graphics; 
     private numRays: number = 30;
     private radius: number;
-    private isBonusRound: boolean = true;
+    private isBonusRound: boolean = false; 
+    private app: Application;
 
-    constructor(pixels: HTMLElement) {
-        this.app = new Application();
-        initDevtools({ app: this.app });
-
-        this.app.init({
-            resizeTo: window,
-            backgroundAlpha: 0,
-        });
-
-        pixels.appendChild(this.app.canvas);
-
-        this.centerX = this.app.renderer.width / 2;
-        this.centerY = this.app.renderer.height / 2;
-        this.radius = Math.max(this.app.renderer.width, this.app.renderer.height) * 1.5;
+    constructor(app: Application) {
+        this.app = app;
+        
+        this.centerX = app.renderer.width / 2;
+        this.centerY = app.renderer.height / 2;
+        this.radius = Math.max(app.renderer.width, app.renderer.height) * 1.5;
 
         this.background = new Graphics();
         this.rays = new Graphics();
-        this.circle = new Graphics();
+        this.shape = new Graphics();
 
         this.createBackground();
         this.createRays();
-        this.createCircle();
+        this.createShape();
     }
 
     private createBackground() {
@@ -46,6 +36,7 @@ export class BackgroundBoard {
     public toggleBonusRound(value: boolean) {
         this.isBonusRound = value;
         this.updateBackground();
+        this.updateShape(); 
     }
 
     private createRays() {
@@ -80,10 +71,57 @@ export class BackgroundBoard {
         }
     }
 
-    private createCircle() {
-        this.circle.circle(this.centerX, this.centerY, this.circleRadius);
-        this.circle.fill(0x2d7a2d);
-        this.circle.stroke({ width: 3, color: 0x1a5c1a });
-        this.app.stage.addChild(this.circle);
+    private createShape() {
+        this.updateShape();
+        this.app.stage.addChild(this.shape);
+    }
+
+    private updateShape() {
+        this.shape.clear();
+
+        if (this.isBonusRound) {
+            const squareSize = this.shapeSize * 2;
+            this.shape.rect(
+                this.centerX - squareSize / 2, 
+                this.centerY - squareSize / 2, 
+                squareSize, 
+                squareSize
+            );
+            this.shape.fill(0xFFD700);
+            this.shape.stroke({ width: 3, color: 0xDAA520 });
+            const text = new Text({
+                text: "BONUS",
+                style: {
+                    fill: 0x000000,
+                    fontSize: 24,
+                    fontFamily: "Arial",
+                    align: "center",
+                },
+            });
+            text.x = this.centerX;
+            text.y = this.centerY;
+            text.anchor.set(0.5);
+            this.shape.addChild(text);
+             
+        } else {
+
+            
+            this.shape.circle(this.centerX, this.centerY, this.shapeSize);
+            this.shape.fill(0x2d7a2d);
+            this.shape.stroke({ width: 3, color: 0x1a5c1a });
+            const text = new Text({
+                text: "DEFAULT",
+                style: {
+                    fill: 0x000000,
+                    fontSize: 24,
+                    fontFamily: "Arial",
+                    align: "center",
+                },
+            });
+           text.x = this.centerX;
+        text.y = this.centerY;
+            text.anchor.set(0.5);
+            this.shape.addChild(text);
+        }
     }
 }
