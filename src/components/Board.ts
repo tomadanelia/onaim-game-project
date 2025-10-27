@@ -104,4 +104,8 @@ export default class Board extends PIXI.Container {
             this.addChild(container);
         });
     }
+    getSquarePosition(index:number):{x:number,y:number}{
+    let square= this.layout[index];
+    return {x: square.position.x+this.SQUARE_SIZE/2,y:square.position.y+this.SQUARE_SIZE/2}
+    }
 }
