@@ -15,7 +15,9 @@ export default class MockBackendService{
         {position: 1, prizeValue: 100, prizeName: "goldHeart"},
         {position: 2, prizeValue: 5, prizeName: "bronzeCoin"},
         {position: 3, prizeValue: 10, prizeName: "silverCoin"},
-        {position: 6, prizeValue: 50, prizeName: "chest"},
+        {position: 4, prizeValue: 200, prizeName: "bronzeHeart2"},
+        {position: 5, prizeValue: 25, prizeName: "bag"},
+        {position: 6, prizeValue: 50, prizeName: "chest2"},
         {position: 7, prizeValue: 1, prizeName: "coin"},
         {position: 8, prizeValue: 20, prizeName: "bronzeHeart"},
         {position: 9, prizeValue: 15, prizeName: "coins"},
@@ -23,8 +25,7 @@ export default class MockBackendService{
         {position: 11, prizeValue: 30, prizeName: "bronzeStar"},
         {position: 12, prizeValue: 80, prizeName: "silverStar"},
         {position: 13, prizeValue: 50, prizeName: "goldStar"},
-        {position: 14, prizeValue: 100, prizeName: "chest2"},
-        {position: 15, prizeValue: 60, prizeName: "silverHeart"},
+        {position: 14, prizeValue: 100, prizeName: "silverHeart"},
     ];
     private bonusPrizes:Prize[]= [
         {position: 0, prizeValue: 100, prizeName: "Gold Trophy"},
