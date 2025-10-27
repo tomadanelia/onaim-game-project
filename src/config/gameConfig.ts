@@ -47,10 +47,11 @@ class GameConfigManager {
                 squares.push({
                     id: i,
                     position: positions[i],
-                    prize: null,
+                    prize: prizes[prizeIndex],
                     isBonus: true,
                     isStart: false
                 });
+                prizeIndex++;
             }
             else {
                 squares.push({
