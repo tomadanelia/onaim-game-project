@@ -67,6 +67,7 @@ async loadAssets(): Promise<void> {
   { alias: 'silverCoin', src: '/assets/images/defaults/silverCoin.png' },
   { alias: 'silverHeart', src: '/assets/images/defaults/silverHeart.png' },
   { alias: 'silverStar', src: '/assets/images/defaults/silverStar.png' },
+  { alias: 'player', src: '/assets/images/defaults/player.png' },
 ];
 
 
