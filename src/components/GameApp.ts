@@ -1,10 +1,13 @@
 import * as PIXI from 'pixi.js';
 import {Text} from 'pixi.js'
+import { apiService } from '../services/apiService';
+import { gameConfig } from '../config/gameConfig';
+import Board from './Board';
 export class GameApp {
     private app!: PIXI.Application;
+    private board!:Board;
 
-    constructor() {
-    }
+    
 
     async init(): Promise<void> {
         this.app = new PIXI.Application();
@@ -83,16 +86,13 @@ async loadAssets(): Promise<void> {
         loadingText.destroy();
     }
 }
-    initGame(){
-    const text = new Text({
-        text: "Game Ready!",
-        style: {
-            fill: 0xffffff,
-            fontSize: 32,
-            fontFamily: "Arial",
-            align: "center",
-        },
-    });       
-    this.app.stage.addChild(text);
+    async initGame(){
+    const config = await apiService.getinitialData();
+    gameConfig.setConfig(config);
+    const layout= gameConfig.generateBoardLayout(config.defaultPrizes);
+    this.board=new Board(layout);
+    this.app.stage.addChild(this.board);
+    this.board.x=(this.app.screen.width - this.board.width)/2;
+    this.board.y=(this.app.screen.height - this.board.height)/2;
     }
 }

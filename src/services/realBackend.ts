@@ -1,4 +1,2 @@
-export default class RealBackendService{
-
-
+export default class RealBackendService {
 }
