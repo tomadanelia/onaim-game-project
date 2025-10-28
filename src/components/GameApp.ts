@@ -19,6 +19,7 @@ export class GameApp {
     private decreaseBetBtn!: HTMLButtonElement;
     private increaseBetBtn!: HTMLButtonElement;
     private back!:BackgroundBoard;
+    betSelector!: HTMLElement | null;
     async init(): Promise<void> {
         this.app = new PIXI.Application();
         
@@ -186,7 +187,15 @@ async loadAssets(): Promise<void> {
     private enableSpinButton(): void {
         this.spinBtn.disabled = false;
     }
+    private disableBettingButton(){
+this.betSelector = document.querySelector(".bet-selector") as HTMLElement;
 
+        if (gameState.isBonusMode()) {
+            this.betSelector.style.display = 'none';
+        } else {
+            this.betSelector.style.display = 'block';
+        }
+    }
         async handleSpin(): Promise<void> {
         const balance = gameState.getBalance();
         const betOptions = gameConfig.getBetOptions()[gameState.getSelectedBetIndex()];
@@ -244,6 +253,8 @@ async loadAssets(): Promise<void> {
         const bonusPrizes:Prize[] = gameConfig.getBonusPrizes();
         this.board.switchToBonusPrizes(bonusPrizes);
         this.back.toggleBonusRound(true);
+        this.disableBettingButton();
+        
         
     }
 }
