@@ -8,9 +8,38 @@
     <title>onaim-game</title>
   </head>
   <body>
+      <div id="ui-container">
+           <div id="balance-display">
+              Balance: $<span id="balance">0</span>
+           </div>
 
-      
-  </div>
+           <div id="bets_and_spins">
+ 
+             <div id="spin_freeSpin">
+                <button id="spin-button">SPIN</button>
+             
+                <div id="free-spins-display" style="display: none;">
+                  Free Spins: <span id="free-spins">0</span>
+                 </div>
+             </div>
+
+
+        <div class="bet-selector">
+  <button class="arrow-btn" id="decreaseBtn">
+    <div class="arrow arrow-left"></div>
+  </button>
+  
+  <div class="bet-text">Bet: <span id="betValue">1</span></div>
+  
+  <button class="arrow-btn" id="increaseBtn">
+    <div class="arrow arrow-right"></div>
+  </button>
+</div>
+          </div>
+    
+    
+      </div>
+    
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

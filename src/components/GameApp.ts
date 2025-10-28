@@ -5,10 +5,14 @@ import { gameConfig } from '../config/gameConfig';
 import Board from './Board';
 import { BackgroundBoard } from '../background';
 import  Player from './Player';
+import { gameState } from '../services/gameState';
 export class GameApp {
     private app!: PIXI.Application;
     private board!:Board;
     private player!:Player;
+     private balanceEl!: HTMLElement;
+    private betEl!: HTMLElement;
+    private freeSpinsEl!: HTMLElement;
 
     
 
@@ -94,6 +98,8 @@ async loadAssets(): Promise<void> {
     async initGame(){
     const config = await apiService.getinitialData();
     gameConfig.setConfig(config);
+            gameState.setBalance(config.balance);
+
     const layout= gameConfig.generateBoardLayout(config.defaultPrizes);
     this.board=new Board(layout);
     this.app.stage.addChild(this.board);
@@ -104,6 +110,33 @@ async loadAssets(): Promise<void> {
     const startPos=this.board.getSquarePosition(0);
     this.player.setPosition(startPos.x, startPos.y);
     this.board.addChild(this.player);
+
+
+     this.balanceEl = document.getElementById('balance')!;
+        this.betEl = document.getElementById('bet-amount')!;
+        this.freeSpinsEl = document.getElementById('free-spins')!;
+
+        this.updateDisplay();
+    }
+    updateDisplay(): void {
+        this.balanceEl.textContent = gameState.getBalance().toString();
+
+        const betOption = gameConfig.getBetOptions()[gameState.getSelectedBetIndex()];
+        this.betEl.textContent = betOption ? betOption.cost.toString() : '0';
+
+        const freeSpins = gameState.getFreeSpinsRemaining();
+        this.freeSpinsEl.textContent = freeSpins.toString();
+
+        const freeSpinsContainer = document.getElementById('free-spins-display')!;
+        if (gameState.isBonusMode()) {
+            freeSpinsContainer.style.display = 'block';
+        } else {
+            freeSpinsContainer.style.display = 'none';
+        }
+    }
+
+        async handleSpin(): Promise<void> {
+        this.updateDisplay();
     }
 
 }

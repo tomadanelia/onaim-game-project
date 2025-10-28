@@ -1,16 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body {
+body,html {
     font-family: 'Arial', sans-serif;
     overflow: hidden;
     background-color: #0a0a0a;
 }
-
 canvas {
     display: block;
-    margin: 0 auto;
 }
+
+#ui-container {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    color: white;
+    font-size: 18px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 70vh;
+    padding-top: 5vh;
+}
+#bets_and_spins {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7vh;
+}
+#spin_freeSpin{
+    display: flex;
+    flex-direction: row;
+    gap: 2vw;
+}
+#spin-button {
+  background: linear-gradient(to bottom, #3ca83c, #2d7a2d);
+      color: white;
+      font-size: 40px;
+      letter-spacing: 0px;
+      border: 3px solid #0c360c;
+      border-radius: 12px;
+      padding: 10px 60px;
+      box-shadow: inset 0 0 0 3px #3dad3d, 0 7px 6px rgba(0,0,0,0.6);
+      cursor: pointer;
+      margin-bottom: 5px;
+      transition: all 0.1s ease-in-out;
+      text-shadow:
+  -3px -3px 0 #1b4f1b,
+   3px -3px 0 #1b4f1b,
+  -3px  3px 0 #1b4f1b,
+   3px  3px 0 #1b4f1b,
+  -3px  0   0 #1b4f1b,
+   3px  0   0 #1b4f1b,
+   0   -3px 0 #1b4f1b,
+   0    3px 0 #1b4f1b;
+     font-weight: 800;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+
+}
+
+ .bet-selector {
+    display: flex;
+    align-items: center;
+    background: #2d5a2d;
+    border: 2px solid #3d6a3d;
+    border-radius: 8px;
+    padding: 8px 12px;
+    gap: 12px;
+  }
+
+  .arrow-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s;
+  }
+
+  .arrow-btn:hover {
+    opacity: 0.7;
+  }
+
+  .arrow-btn:active {
+    opacity: 0.5;
+  }
+
+  .arrow {
+    width: 0;
+    height: 0;
+    border-style: solid;
+  }
+
+  .arrow-left {
+    border-width: 8px 12px 8px 0;
+    border-color: transparent #fff transparent transparent;
+  }
+
+  .arrow-right {
+    border-width: 8px 0 8px 12px;
+    border-color: transparent transparent transparent #fff;
+  }
+
+  .bet-text {
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    min-width: 80px;
+    text-align: center;
+  }

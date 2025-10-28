@@ -1,4 +1,4 @@
-import  { Application, Graphics,Text } from "pixi.js";
+import  { Application, Graphics,Text, TextStyle } from "pixi.js";
 export class BackgroundBoard {
     private centerX: number;
     private centerY: number;
@@ -89,15 +89,22 @@ export class BackgroundBoard {
             );
             this.shape.fill(0xFFD700);
             this.shape.stroke({ width: 3, color: 0xDAA520 });
+            const style = new TextStyle({
+    fontFamily: "Gill Sans, Gill Sans MT, Calibri, Trebuchet MS, sans-serif",
+    fontSize: 40,
+    fontWeight: "800",
+    fill: "#ffffff",
+    letterSpacing: 0,
+    dropShadow: {
+        color: "#163e16ff",      
+        blur: 0,               
+        angle: Math.PI / 4,    
+        distance: 5,           
+    },
+});
             const text = new Text({
                 text: "BONUS",
-                style: {
-                    fill: 0x000000,
-                    fontSize: 24,
-                    fontFamily: "Arial",
-                    align: "center",
-                },
-            });
+                style});
             text.x = this.centerX;
             text.y = this.centerY;
             text.anchor.set(0.5);
@@ -109,14 +116,22 @@ export class BackgroundBoard {
             this.shape.circle(this.centerX, this.centerY, this.shapeSize);
             this.shape.fill(0x2d7a2d);
             this.shape.stroke({ width: 3, color: 0x1a5c1a });
+            const style = new TextStyle({
+    fontFamily: "Gill Sans, Gill Sans MT, Calibri, Trebuchet MS, sans-serif",
+    fontSize: 40,
+    fontWeight: "800",
+    fill: "#ffffff",
+    letterSpacing: 0,
+    dropShadow: {
+        color: "#163e16ff",      
+        blur: 0,               
+        angle: Math.PI / 4,    
+        distance: 5,           
+    },
+});
             const text = new Text({
                 text: "DEFAULT",
-                style: {
-                    fill: 0x000000,
-                    fontSize: 24,
-                    fontFamily: "Arial",
-                    align: "center",
-                },
+                style,
             });
            text.x = this.centerX;
         text.y = this.centerY;
