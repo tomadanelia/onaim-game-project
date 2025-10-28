@@ -18,7 +18,7 @@ export class GameApp {
     private betValueEl!: HTMLElement;
     private decreaseBetBtn!: HTMLButtonElement;
     private increaseBetBtn!: HTMLButtonElement;
-
+    private back!:BackgroundBoard;
     async init(): Promise<void> {
         this.app = new PIXI.Application();
         
@@ -32,8 +32,7 @@ export class GameApp {
 
         
         document.body.appendChild(this.app.canvas);
-        const back = new BackgroundBoard(this.app);
-        back.toggleBonusRound(false);
+        this.back = new BackgroundBoard(this.app);
         console.log('Pixi Application initialized');
     }
 
@@ -244,5 +243,7 @@ async loadAssets(): Promise<void> {
         gameState.enterBonusMode(freeSpins);
         const bonusPrizes:Prize[] = gameConfig.getBonusPrizes();
         this.board.switchToBonusPrizes(bonusPrizes);
+        this.back.toggleBonusRound(true);
+        
     }
 }
