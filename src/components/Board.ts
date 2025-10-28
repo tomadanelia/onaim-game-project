@@ -108,6 +108,12 @@ export default class Board extends PIXI.Container {
     let square= this.layout[index];
     return {x: square.position.x+this.SQUARE_SIZE/2,y:square.position.y+this.SQUARE_SIZE/2-3}
     }
+    switchToDefaultPrizes(prizes:Prize[]):void{
+         this.layout.forEach((square,i) => {
+           square.prize=prizes[i];
+    });
+    this.renderSquares();
+    }
     switchToBonusPrizes(prizes: Prize[]): void{
         this.layout.forEach((square,i) => {
            square.prize=prizes[i];
