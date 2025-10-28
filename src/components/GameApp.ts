@@ -6,13 +6,14 @@ import Board from './Board';
 import { BackgroundBoard } from '../background';
 import  Player from './Player';
 import { gameState } from '../services/gameState';
+import type { MakeSpinRequest } from '../types/apiTypes';
 export class GameApp {
     private app!: PIXI.Application;
     private board!:Board;
     private player!:Player;
      private balanceEl!: HTMLElement;
     private freeSpinsEl!: HTMLElement;
-
+    private spinBtn!: HTMLButtonElement;
     private betValueEl!: HTMLElement;
     private decreaseBetBtn!: HTMLButtonElement;
     private increaseBetBtn!: HTMLButtonElement;
@@ -115,12 +116,12 @@ async loadAssets(): Promise<void> {
 
         this.balanceEl = document.getElementById('balance')!;
         this.freeSpinsEl = document.getElementById('free-spins')!;
-    
+        this.spinBtn = document.getElementById('spin-button') as HTMLButtonElement;
         this.betValueEl = document.getElementById('betValue')!;
         this.decreaseBetBtn = document.getElementById('decreaseBtn') as HTMLButtonElement;
         this.increaseBetBtn = document.getElementById('increaseBtn') as HTMLButtonElement;
                 this.setupBetSelectors();
-
+        this.setupSpinButton();
         this.updateDisplay();
     }
 
@@ -128,6 +129,9 @@ async loadAssets(): Promise<void> {
     private setupBetSelectors(): void {
         this.decreaseBetBtn.addEventListener('click', () => this.handleDecreaseBet());
         this.increaseBetBtn.addEventListener('click', () => this.handleIncreaseBet());
+    }
+    private setupSpinButton(): void {
+        this.spinBtn.addEventListener('click', () => this.handleSpin());
     }
 
     private handleIncreaseBet(): void {
@@ -176,9 +180,46 @@ async loadAssets(): Promise<void> {
             freeSpinsContainer.style.display = 'none';
         }
     }
+        private disableSpinButton(): void {
+        this.spinBtn.disabled = true;
+    }   
+    private enableSpinButton(): void {
+        this.spinBtn.disabled = false;
+    }
 
         async handleSpin(): Promise<void> {
-        this.updateDisplay();
+        const balance = gameState.getBalance();
+        const betOptions = gameConfig.getBetOptions()[gameState.getSelectedBetIndex()];
+        if (balance < betOptions.cost) {
+        alert('Insufficient balance for this bet.');
+            return;
+        }
+        const isFreeSpins= gameState.isBonusMode() && gameState.getFreeSpinsRemaining()>0;
+        if (isFreeSpins){
+            this.disableSpinButton();
+        }
+        else{
+            const req: MakeSpinRequest={
+                betAmount: betOptions.cost,
+                isFreeSpin: isFreeSpins
+            };
+            const result= await apiService.makeSpin(req);
+            await this.movePlayer(result.rollResult);
+            console.log('Spin result:', result.rollResult);
+            this.enableSpinButton();
+        }
+       this.updateDisplay();
+
+        
+    }
+
+
+    async movePlayer(steps:number):Promise<void>{
+        gameState.movePlayer(steps);
+        const newPos= gameState.getCurrentPosition();
+        const targetPos= this.board.getSquarePosition(newPos);
+        this.player.setPosition(targetPos.x, targetPos.y);
+        this.player.setCurrentSquareIndex(newPos);
     }
 
 }

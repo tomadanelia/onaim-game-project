@@ -22,6 +22,9 @@ export default class Player extends PIXI.Container {
         this.x=x;
         this.y=y;
     }
+    setCurrentSquareIndex(index: number): void {
+        this.currentSquareIndex = index;
+    }
 
 }
 
