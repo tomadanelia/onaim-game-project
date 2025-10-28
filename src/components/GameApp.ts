@@ -243,6 +243,6 @@ async loadAssets(): Promise<void> {
         const freeSpins= gameConfig.getFreeSpinsCount();
         gameState.enterBonusMode(freeSpins);
         const bonusPrizes:Prize[] = gameConfig.getBonusPrizes();
-
+        this.board.switchToBonusPrizes(bonusPrizes);
     }
 }
