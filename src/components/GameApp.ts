@@ -204,6 +204,7 @@ async loadAssets(): Promise<void> {
                 isFreeSpin: isFreeSpins
             };
             const result= await apiService.makeSpin(req);
+            gameState.setBalance(result.newBalance);
             await this.movePlayer(result.rollResult);
             console.log('Spin result:', result.rollResult);
             this.enableSpinButton();
@@ -216,10 +217,24 @@ async loadAssets(): Promise<void> {
 
     async movePlayer(steps:number):Promise<void>{
         gameState.movePlayer(steps);
+        this.handlePrizeCollection();
         const newPos= gameState.getCurrentPosition();
         const targetPos= this.board.getSquarePosition(newPos);
         this.player.setPosition(targetPos.x, targetPos.y);
         this.player.setCurrentSquareIndex(newPos);
+    }
+
+    handlePrizeCollection():void{
+    let pos= gameState.getCurrentPosition();
+    let layout= this.board.getLayout();
+    let square= layout[pos];
+    let prize= square.prize;
+    if(square.isBonus && !gameState.isBonusMode()){
+        console.log('Entered BONUS round!');
+        gameState.enterBonusMode();
+    }
+    let winAmount= prize ? prize.prizeValue : 0;
+    gameState.setBalance(gameState.getBalance()+winAmount);
     }
 
 }
