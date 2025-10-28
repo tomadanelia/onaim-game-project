@@ -11,7 +11,7 @@ class GameStateManager{
         freeSpinsRemaining: 0,
         selectedBetIndex: 0
     }
-
+    
     }
     getCurrentPosition():number{
         return this.state.currentPosition;
@@ -27,6 +27,27 @@ class GameStateManager{
     }
     getSelectedBetIndex():number{
         return this.state.selectedBetIndex;
+    }
+    setBalance(newBalance:number):void{
+        this.state.balance=newBalance;
+    }
+    movePlayer(steps:number):void{
+        this.state.currentPosition=(this.state.currentPosition+steps)%16;
+    }
+    enterBonusMode():void{
+        this.state.isBonus=true;
+        this.state.freeSpinsRemaining=3;
+    }
+    exitBonusMode():void{
+        this.state.isBonus=false;
+    }
+    decrementFreeSpin():void{
+        if(this.state.freeSpinsRemaining>0){
+            this.state.freeSpinsRemaining--;
+        }
+    }
+    setSelectedBetIndex(index:number):void{
+        this.state.selectedBetIndex=index;
     }
 
 }
