@@ -27,6 +27,7 @@ export default class MockBackendService{
         {position: 12, prizeValue: 80, prizeName: "silverStar"},
         {position: 13, prizeValue: 50, prizeName: "goldStar"},
         {position: 14, prizeValue: 70, prizeName: "silverHeart"},
+        {position: 15, prizeValue: 30, prizeName: "coins"},
     ];
     private bonusPrizes:Prize[]= [
         {position: 0, prizeValue: 1000, prizeName: "Gold Trophy"},

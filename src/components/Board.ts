@@ -6,11 +6,15 @@ export default class Board extends PIXI.Container {
     private layout: BoardSquare[];
     private squares: PIXI.Graphics[] = [];
     private SQUARE_SIZE = 80;
+    private squaresContainer: PIXI.Container; 
+
     SQUARE_PADDING = 10;
 
     constructor(layout: BoardSquare[]) {
         super();
         this.layout = layout;
+        this.squaresContainer = new PIXI.Container();
+        this.addChild(this.squaresContainer);
         this.renderSquares();
     }
 
@@ -23,6 +27,7 @@ export default class Board extends PIXI.Container {
     }
 
     renderSquares(): void {
+        this.squaresContainer.removeChildren();
         this.layout.forEach((square) => {
             const container = new PIXI.Container();
             const shadow = new PIXI.Graphics();
@@ -101,7 +106,7 @@ export default class Board extends PIXI.Container {
             container.y = square.position.y;
             
             this.squares.push(container as any); 
-            this.addChild(container);
+            this.squaresContainer.addChild(container); 
         });
     }
     getSquarePosition(index:number):{x:number,y:number}{
@@ -109,12 +114,19 @@ export default class Board extends PIXI.Container {
     return {x: square.position.x+this.SQUARE_SIZE/2,y:square.position.y+this.SQUARE_SIZE/2-3}
     }
     switchToDefaultPrizes(prizes:Prize[]):void{
-         this.layout.forEach((square,i) => {
-           square.prize=prizes[i];
+        let prizeIndex = 0;
+    this.layout.forEach((square) => {
+        if (square.isStart) {
+            square.prize = null;
+        } else {
+            square.prize = prizes[prizeIndex];
+            prizeIndex++; 
+        }
     });
     this.renderSquares();
     }
     switchToBonusPrizes(prizes: Prize[]): void{
+        this.squaresContainer.removeChildren();
         this.layout.forEach((square,i) => {
            square.prize=prizes[i];
     });
@@ -196,7 +208,7 @@ export default class Board extends PIXI.Container {
             container.y = square.position.y;
             
             this.squares.push(container as any); 
-            this.addChild(container);
+            this.squaresContainer.addChild(container);
         });
 
 }
