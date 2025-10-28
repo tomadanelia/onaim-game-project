@@ -235,12 +235,14 @@ async loadAssets(): Promise<void> {
         this.enterBonusMode();
     }
     let winAmount= prize ? prize.prizeValue : 0;
-    gameState.setBalance(gameState.getBalance()+winAmount);
+    const mul = gameConfig.getBetOptions()[gameState.getSelectedBetIndex()].multiplier;
+
+    gameState.setBalance(gameState.getBalance()+winAmount*mul);
     }
     enterBonusMode():void{
         const freeSpins= gameConfig.getFreeSpinsCount();
         gameState.enterBonusMode(freeSpins);
         const bonusPrizes:Prize[] = gameConfig.getBonusPrizes();
-        
+
     }
 }
