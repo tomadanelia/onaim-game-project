@@ -34,9 +34,9 @@ class GameStateManager{
     movePlayer(steps:number):void{
         this.state.currentPosition=(this.state.currentPosition+steps)%16;
     }
-    enterBonusMode():void{
+    enterBonusMode(freeSpins:number):void{
         this.state.isBonus=true;
-        this.state.freeSpinsRemaining=3;
+        this.state.freeSpinsRemaining=freeSpins;
     }
     exitBonusMode():void{
         this.state.isBonus=false;

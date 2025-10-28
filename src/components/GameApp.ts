@@ -7,6 +7,7 @@ import { BackgroundBoard } from '../background';
 import  Player from './Player';
 import { gameState } from '../services/gameState';
 import type { MakeSpinRequest } from '../types/apiTypes';
+import type { Prize } from '../types/gameTypes';
 export class GameApp {
     private app!: PIXI.Application;
     private board!:Board;
@@ -231,10 +232,15 @@ async loadAssets(): Promise<void> {
     let prize= square.prize;
     if(square.isBonus && !gameState.isBonusMode()){
         console.log('Entered BONUS round!');
-        gameState.enterBonusMode();
+        this.enterBonusMode();
     }
     let winAmount= prize ? prize.prizeValue : 0;
     gameState.setBalance(gameState.getBalance()+winAmount);
     }
-
+    enterBonusMode():void{
+        const freeSpins= gameConfig.getFreeSpinsCount();
+        gameState.enterBonusMode(freeSpins);
+        const bonusPrizes:Prize[] = gameConfig.getBonusPrizes();
+        
+    }
 }
