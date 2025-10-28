@@ -1,4 +1,4 @@
-import type { inititalDataResponse, MakeSpinRequest, MakeSpinResponse } from "../types/apiTypes";
+import type { inititalDataResponse, MakeSpinResponse } from "../types/apiTypes";
 import MockBackendService from "./mockBackend";
 import RealBackendService from "./realBackend";
 
@@ -21,9 +21,9 @@ class ApiService {
             throw new Error("Real backend not implemented yet");
         }
     }
-    async makeSpin(req:MakeSpinRequest):Promise<MakeSpinResponse>{
+    async makeSpin():Promise<MakeSpinResponse>{
         if (this.isMockMode) {
-            return (this.backendService as MockBackendService).makeSpin(req);
+            return (this.backendService as MockBackendService).makeSpin();
         }
         else{
             throw new Error("Real backend not implemented yet");

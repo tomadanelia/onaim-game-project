@@ -8,6 +8,7 @@ import  Player from './Player';
 import { gameState } from '../services/gameState';
 import type { MakeSpinRequest } from '../types/apiTypes';
 import type { Prize } from '../types/gameTypes';
+import MockBackendService from '../services/mockBackend';
 export class GameApp {
     private app!: PIXI.Application;
     private board!:Board;
@@ -206,14 +207,17 @@ this.betSelector = document.querySelector(".bet-selector") as HTMLElement;
         const isFreeSpins= gameState.isBonusMode() && gameState.getFreeSpinsRemaining()>0;
         if (isFreeSpins){
             this.disableSpinButton();
+            const result= await apiService.makeSpin();
+            await this.movePlayer(result.rollResult);
         }
         else{
             const req: MakeSpinRequest={
                 betAmount: betOptions.cost,
                 isFreeSpin: isFreeSpins
             };
-            const result= await apiService.makeSpin(req);
-            gameState.setBalance(result.newBalance);
+            const result= await apiService.makeSpin();
+            let bal=gameState.getBalance()-req.betAmount;
+            gameState.setBalance(bal);
             await this.movePlayer(result.rollResult);
             console.log('Spin result:', result.rollResult);
             this.enableSpinButton();
@@ -246,6 +250,7 @@ this.betSelector = document.querySelector(".bet-selector") as HTMLElement;
     const mul = gameConfig.getBetOptions()[gameState.getSelectedBetIndex()].multiplier;
     let bal=gameState.getBalance()+winAmount*mul;
     gameState.setBalance(bal);
+    
     }
     enterBonusMode():void{
         const freeSpins= gameConfig.getFreeSpinsCount();
@@ -254,7 +259,15 @@ this.betSelector = document.querySelector(".bet-selector") as HTMLElement;
         this.board.switchToBonusPrizes(bonusPrizes);
         this.back.toggleBonusRound(true);
         this.disableBettingButton();
+        this.playFreeSpins();
         
         
+    }
+    async playFreeSpins():Promise<void>{
+    let spinsRemaining = gameState.getFreeSpinsRemaining()
+    /*while(spinsRemaining>0){
+        await new Promise(resolve => setTimeout(resolve, 1000))
+        await this.handleSpin();
+    }*/
     }
 }

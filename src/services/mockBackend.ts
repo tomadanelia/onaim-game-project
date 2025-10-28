@@ -1,4 +1,4 @@
-import type { inititalDataResponse, MakeSpinRequest, MakeSpinResponse } from "../types/apiTypes";
+import type { inititalDataResponse, MakeSpinResponse } from "../types/apiTypes";
 import type { BetOption, Prize } from "../types/gameTypes";
 
 export default class MockBackendService{
@@ -10,6 +10,7 @@ export default class MockBackendService{
        { cost: 20, multiplier: 2},
        { cost: 50, multiplier: 5}
      ];
+
      private defaultPrizes:Prize[]= [
         {position: 0, prizeValue: 40, prizeName: "chest"},
         {position: 1, prizeValue: 80, prizeName: "goldHeart"},
@@ -57,16 +58,12 @@ export default class MockBackendService{
     }
     return response;
     }
-    makeSpin(req: MakeSpinRequest): MakeSpinResponse {
-        const {betAmount, isFreeSpin} = req;
+    makeSpin(): MakeSpinResponse {
         const die1 = Math.floor(Math.random() * 6) + 1;
         const die2 = Math.floor(Math.random() * 6) + 1;
         const rollResult = die1 + die2;
 
-        if (!isFreeSpin) {
-            this.balance -= betAmount;
-        }
-
+    
        
 
         return {
