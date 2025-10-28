@@ -11,10 +11,11 @@ export class GameApp {
     private board!:Board;
     private player!:Player;
      private balanceEl!: HTMLElement;
-    private betEl!: HTMLElement;
     private freeSpinsEl!: HTMLElement;
 
-    
+    private betValueEl!: HTMLElement;
+    private decreaseBetBtn!: HTMLButtonElement;
+    private increaseBetBtn!: HTMLButtonElement;
 
     async init(): Promise<void> {
         this.app = new PIXI.Application();
@@ -112,17 +113,58 @@ async loadAssets(): Promise<void> {
     this.board.addChild(this.player);
 
 
-     this.balanceEl = document.getElementById('balance')!;
-        this.betEl = document.getElementById('bet-amount')!;
+        this.balanceEl = document.getElementById('balance')!;
         this.freeSpinsEl = document.getElementById('free-spins')!;
+    
+        this.betValueEl = document.getElementById('betValue')!;
+        this.decreaseBetBtn = document.getElementById('decreaseBtn') as HTMLButtonElement;
+        this.increaseBetBtn = document.getElementById('increaseBtn') as HTMLButtonElement;
+                this.setupBetSelectors();
 
         this.updateDisplay();
     }
+
+
+    private setupBetSelectors(): void {
+        this.decreaseBetBtn.addEventListener('click', () => this.handleDecreaseBet());
+        this.increaseBetBtn.addEventListener('click', () => this.handleIncreaseBet());
+    }
+
+    private handleIncreaseBet(): void {
+        const betOptions = gameConfig.getBetOptions();
+        if (betOptions.length === 0) return;
+
+        let currentIndex = gameState.getSelectedBetIndex();
+        const newIndex = (currentIndex + 1) % betOptions.length;
+        
+        gameState.setSelectedBetIndex(newIndex);
+        this.updateDisplay();
+    }
+
+    private handleDecreaseBet(): void {
+        const betOptions = gameConfig.getBetOptions();
+        if (betOptions.length === 0) return;
+
+        let currentIndex = gameState.getSelectedBetIndex();
+        const newIndex = (currentIndex - 1 + betOptions.length) % betOptions.length;
+
+        gameState.setSelectedBetIndex(newIndex);
+        this.updateDisplay();
+    }
+
     updateDisplay(): void {
         this.balanceEl.textContent = gameState.getBalance().toString();
 
-        const betOption = gameConfig.getBetOptions()[gameState.getSelectedBetIndex()];
-        this.betEl.textContent = betOption ? betOption.cost.toString() : '0';
+        const betOptions = gameConfig.getBetOptions();
+        const selectedIndex = gameState.getSelectedBetIndex();
+        const currentBetOption = betOptions[selectedIndex];
+
+        if (currentBetOption) {
+            this.betValueEl.textContent = currentBetOption.cost.toString();
+        } else {
+            this.betValueEl.textContent = '0';
+        }
+
 
         const freeSpins = gameState.getFreeSpinsRemaining();
         this.freeSpinsEl.textContent = freeSpins.toString();
