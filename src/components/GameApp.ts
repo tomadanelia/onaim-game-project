@@ -8,7 +8,6 @@ import  Player from './Player';
 import { gameState } from '../services/gameState';
 import type { MakeSpinRequest } from '../types/apiTypes';
 import type { Prize } from '../types/gameTypes';
-import MockBackendService from '../services/mockBackend';
 export class GameApp {
     private app!: PIXI.Application;
     private board!:Board;
@@ -197,6 +196,16 @@ this.betSelector = document.querySelector(".bet-selector") as HTMLElement;
             this.betSelector.style.display = 'block';
         }
     }
+    private enableBettingButton(){
+        this.betSelector = document.querySelector(".bet-selector") as HTMLElement;
+                this.betSelector.style.display = 'flex';
+
+    }
+    disableFreeSpins(){
+    const freeSpinsContainer = document.getElementById('free-spins-display')!;
+    freeSpinsContainer.style.display="none";
+    }
+   
         async handleSpin(): Promise<void> {
         const balance = gameState.getBalance();
         const betOptions = gameConfig.getBetOptions()[gameState.getSelectedBetIndex()];
@@ -252,6 +261,14 @@ this.betSelector = document.querySelector(".bet-selector") as HTMLElement;
     gameState.setBalance(bal);
     
     }
+    exitBonusMode(){
+    gameState.exitBonusMode();
+    const defaultPrizes=gameConfig.getDefaultPrizes();
+    this.board.switchToDefaultPrizes(defaultPrizes);
+    this.back.toggleBonusRound(false);
+    this.enableBettingButton();
+    this.disableFreeSpins();
+    }
     enterBonusMode():void{
         const freeSpins= gameConfig.getFreeSpinsCount();
         gameState.enterBonusMode(freeSpins);
@@ -263,11 +280,13 @@ this.betSelector = document.querySelector(".bet-selector") as HTMLElement;
         
         
     }
-    async playFreeSpins():Promise<void>{
-    let spinsRemaining = gameState.getFreeSpinsRemaining()
-    /*while(spinsRemaining>0){
-        await new Promise(resolve => setTimeout(resolve, 1000))
+    async playFreeSpins(): Promise<void> {
+    for (let i = gameState.getFreeSpinsRemaining(); i >= 0; i--) {
+        await new Promise(resolve => setTimeout(resolve, 1000));
         await this.handleSpin();
-    }*/
+        gameState.decrementFreeSpin();
     }
+    this.exitBonusMode();
+}
+
 }
