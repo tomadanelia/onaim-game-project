@@ -31,10 +31,10 @@ export class GameApp {
             autoDensity: true,
         });
 
-        
         document.body.appendChild(this.app.canvas);
         this.back = new BackgroundBoard(this.app);
         console.log('Pixi Application initialized');
+
     }
 
     getApp(): PIXI.Application {
@@ -244,8 +244,8 @@ this.betSelector = document.querySelector(".bet-selector") as HTMLElement;
     }
     let winAmount= prize ? prize.prizeValue : 0;
     const mul = gameConfig.getBetOptions()[gameState.getSelectedBetIndex()].multiplier;
-
-    gameState.setBalance(gameState.getBalance()+winAmount*mul);
+    let bal=gameState.getBalance()+winAmount*mul;
+    gameState.setBalance(bal);
     }
     enterBonusMode():void{
         const freeSpins= gameConfig.getFreeSpinsCount();

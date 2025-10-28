@@ -78,28 +78,36 @@ export class BackgroundBoard {
 
     private updateShape() {
         this.shape.clear();
+        this.shape.removeChildren();
 
         if (this.isBonusRound) {
-            const squareSize = this.shapeSize * 2;
+            const squareSize = this.shapeSize*2;
             this.shape.rect(
                 this.centerX - squareSize / 2, 
                 this.centerY - squareSize / 2, 
                 squareSize, 
                 squareSize
             );
-            this.shape.fill(0xFFD700);
-            this.shape.stroke({ width: 3, color: 0xDAA520 });
+            
+            this.shape.fill("#ec9c12ff");
+            this.shape.stroke({ width: 5, color: "#ffcc00ff" });
             const style = new TextStyle({
     fontFamily: "Gill Sans, Gill Sans MT, Calibri, Trebuchet MS, sans-serif",
     fontSize: 40,
     fontWeight: "800",
-    fill: "#ffffff",
+    fill: "#d4d92dff",
     letterSpacing: 0,
     dropShadow: {
         color: "#163e16ff",      
         blur: 0,               
         angle: Math.PI / 4,    
         distance: 5,           
+    },
+     stroke: {
+        color: "#000000", // black border
+        width: 4,         // thickness of the outline
+        join: "round",    // "miter" | "round" | "bevel"
+        alignment: 0.5,   // centers the stroke between inside/outside
     },
 });
             const text = new Text({

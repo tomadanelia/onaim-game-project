@@ -13,6 +13,8 @@ class GameStateManager{
     }
     
     }
+     setBonus(x:boolean){
+        this.state.isBonus=x}
     getCurrentPosition():number{
         return this.state.currentPosition;
     }
