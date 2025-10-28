@@ -68,10 +68,10 @@ canvas {
  .bet-selector {
     display: flex;
     align-items: center;
-    background: #2d5a2d;
+    background: #0b410b;
     border: 2px solid #3d6a3d;
-    border-radius: 8px;
-    padding: 8px 12px;
+    border-radius: 13px;
+    padding: 1px 12px;
     gap: 12px;
   }
 
@@ -79,7 +79,7 @@ canvas {
     background: none;
     border: none;
     cursor: pointer;
-    padding: 4px;
+    padding: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -102,12 +102,12 @@ canvas {
 
   .arrow-left {
     border-width: 8px 12px 8px 0;
-    border-color: transparent #fff transparent transparent;
+    border-color: transparent #3ca83c transparent transparent;
   }
 
   .arrow-right {
     border-width: 8px 0 8px 12px;
-    border-color: transparent transparent transparent #fff;
+    border-color: transparent transparent transparent #3ca83c;
   }
 
   .bet-text {
