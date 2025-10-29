@@ -28,12 +28,12 @@ class SoundManager {
             this.sounds.set(config.name, howl);
         });
         const roll = new Howl({
-        src: ['/assets/sounds/roll.mp3'],
+        src: ['/assets/sounds/roll.mp3.wav'],
         volume: 0.5,
         sprite: {
-            roll1: [2000, 4000],
-            roll2: [4100, 6000],
-            roll3: [8000, 10000],
+            roll1: [0, 1000],
+         roll2: [2000, 3000],
+
         }
     });
     this.sounds.set('roll', roll);
@@ -47,7 +47,7 @@ class SoundManager {
     if (!sound) return;
 
     if (soundName === 'roll') {
-        const rolls = ['roll1', 'roll2', 'roll3'];
+        const rolls = ['roll2', 'roll1'];
         const random = rolls[Math.floor(Math.random() * rolls.length)];
         sound.play(random);
     } else {
