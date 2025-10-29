@@ -38,7 +38,18 @@ export class BackgroundBoard {
         this.updateBackground();
         this.updateShape(); 
     }
+    public onResize(): void {
+    this.centerX = this.app.renderer.width / 2;
+    this.centerY = this.app.renderer.height / 2;
+    this.radius = Math.max(this.app.renderer.width, this.app.renderer.height) * 1.5;
 
+    this.background.clear();
+    this.background.rect(0, 0, this.app.renderer.width, this.app.renderer.height);
+    const solidBgColor = this.isBonusRound ? 0x4a1a5c : 0x1a5c1a;
+    this.background.fill(solidBgColor);
+        this.updateBackground(); 
+    this.updateShape();      
+}
     private createRays() {
         this.updateBackground();
         this.app.stage.addChild(this.rays);

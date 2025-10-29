@@ -124,6 +124,8 @@ async loadAssets(): Promise<void> {
                 this.setupBetSelectors();
         this.setupSpinButton();
         this.updateDisplay();
+        window.addEventListener('resize', () => this.handleResize());
+
     }
 
 
@@ -236,7 +238,17 @@ this.betSelector = document.querySelector(".bet-selector") as HTMLElement;
         
     }
 
+    private handleResize(): void {
+    this.app.renderer.resize(window.innerWidth, window.innerHeight);
 
+    if (this.board) {
+        this.board.x = (this.app.screen.width - this.board.width) / 2;
+        this.board.y = (this.app.screen.height - this.board.height) / 2;
+    }
+     if (this.back) {
+        this.back.onResize();
+    }
+}
     async movePlayer(steps:number):Promise<void>{
         gameState.movePlayer(steps);
         this.handlePrizeCollection();
