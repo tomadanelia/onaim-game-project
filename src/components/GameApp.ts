@@ -208,13 +208,7 @@ this.betSelector = document.querySelector(".bet-selector") as HTMLElement;
                 this.betSelector.style.display = 'flex';
 
     }
-    private changeSpinButton(){
-        let spinBtn= this.spinBtn as HTMLElement;
-        if (gameState.isBonusMode()){
-            spinBtn.style.backgroundColor="#a812a8ff";
-        }
-        
-    }
+   
     disableFreeSpins(){
     const freeSpinsContainer = document.getElementById('free-spins-display')!;
     freeSpinsContainer.style.display="none";
@@ -320,7 +314,10 @@ async movePlayer(steps: number): Promise<void> {
     this.board.switchToDefaultPrizes(defaultPrizes);
     this.back.toggleBonusRound(false);
     this.enableBettingButton();
+    
     this.disableFreeSpins();
+        this.spinBtn.classList.remove('bonus-mode'); 
+
     }
     enterBonusMode():void{
         const freeSpins= gameConfig.getFreeSpinsCount();
@@ -329,8 +326,9 @@ async movePlayer(steps: number): Promise<void> {
         this.board.switchToBonusPrizes(bonusPrizes);
         this.back.toggleBonusRound(true);
         this.disableBettingButton();
+        this.spinBtn.classList.add('bonus-mode'); 
+
         this.playFreeSpins();
-        this.changeSpinButton();
         
         
     }
