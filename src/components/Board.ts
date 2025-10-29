@@ -131,85 +131,73 @@ export default class Board extends PIXI.Container {
            square.prize=prizes[i];
     });
     this.layout.forEach((square) => {
-            const container = new PIXI.Container();
-            const shadow = new PIXI.Graphics();
-            shadow.roundRect(3, 5, this.SQUARE_SIZE, this.SQUARE_SIZE, 12);
-            shadow.fill({ color: 0x000000, alpha: 0.4 });
-            container.addChild(shadow);
+    // --- Style Configuration ---
+    const BORDER_THICKNESS = 8; // Thickness of the lighter border (7-9px range)
+    const CORNER_RADIUS = 15;   // How rounded the corners are
 
-            const outerBorder = new PIXI.Graphics();
-            outerBorder.roundRect(0, 0, this.SQUARE_SIZE, this.SQUARE_SIZE, 12);
-            outerBorder.fill(0x4a1f6b); 
-            container.addChild(outerBorder);
+    // --- Colors ---
+    const LIGHT_PURPLE = "#9e2ec3ff"; 
+    const DARK_PURPLE = "#7f0aa6ff";   
+    const START_SQUARE_COLOR = 0x4a1a5c; 
 
-            const innerSquare = new PIXI.Graphics();
-            const borderWidth = 4;
-            innerSquare.roundRect(
-                borderWidth, 
-                borderWidth, 
-                this.SQUARE_SIZE - borderWidth * 2, 
-                this.SQUARE_SIZE - borderWidth * 2, 
-                8
-            );
-            
-            let bgColor = 0x7b3fb2; 
-             if (square.isStart) {
-                bgColor = 0x5a2d82; 
-            }
-            
-            innerSquare.fill(bgColor);
-            container.addChild(innerSquare);
+   
+    const container = new PIXI.Container();
 
-            
-            const highlight = new PIXI.Graphics();
-            highlight.roundRect(
-                borderWidth + 2, 
-                borderWidth + 2, 
-                this.SQUARE_SIZE - borderWidth * 2 - 4, 
-                (this.SQUARE_SIZE - borderWidth * 2) * 0.2, 
-                6
-            );
-            highlight.fill({ color: 0xffffff, alpha: 0.2 });
-            container.addChild(highlight);
+    const shadow = new PIXI.Graphics();
+    shadow.roundRect(4, 4, this.SQUARE_SIZE, this.SQUARE_SIZE, CORNER_RADIUS);
+    shadow.fill({ color: "black", alpha: 0.51 });
+    container.addChild(shadow);
 
-            const innerGlow = new PIXI.Graphics();
-            innerGlow.roundRect(
-                borderWidth, 
-                borderWidth, 
-                this.SQUARE_SIZE - borderWidth * 2, 
-                this.SQUARE_SIZE - borderWidth * 2, 
-                8
-            );
-            innerGlow.stroke({ width: 2, color: 0x9d5fd3, alpha: 0.6 }); 
-            container.addChild(innerGlow);
+    const borderBox = new PIXI.Graphics();
+    borderBox.roundRect(0, 0, this.SQUARE_SIZE, this.SQUARE_SIZE, CORNER_RADIUS);
+    borderBox.fill(LIGHT_PURPLE).stroke({ width: 1, color: "white", alpha: 0.6 });
+    container.addChild(borderBox);
 
-            let txt = square.isStart 
-                ? "START" 
-                : "+" + square.prize?.prizeValue.toString();
-            
-            let text = new Text({
-                text: txt,
-                style: {
-                    fill: 0xffd700, 
-                    fontSize: square.isStart || square.isBonus ? 14 : 18,
-                    fontFamily: "Arial",
-                    fontWeight: 'bold',
-                    align: "center",
-                    stroke: { color: 0x000000, width: 3 }, 
-                },
-            });
-            text.x = this.SQUARE_SIZE / 2;
-            text.y = this.SQUARE_SIZE / 2;
-            text.anchor.set(0.5);
-            container.addChild(text);
+    const backgroundBox = new PIXI.Graphics();
+    const innerCornerRadius = Math.max(0, CORNER_RADIUS - BORDER_THICKNESS+3);
+    backgroundBox.roundRect(
+        BORDER_THICKNESS,
+        BORDER_THICKNESS,
+        this.SQUARE_SIZE - BORDER_THICKNESS * 2,
+        this.SQUARE_SIZE - BORDER_THICKNESS * 2,
+        innerCornerRadius
+    ).stroke({ width: 1, color: "white", alpha: 0.6 });
+    const shader = new PIXI.Graphics();
+    shader.roundRect(4, 4.5,this.SQUARE_SIZE - BORDER_THICKNESS * 2+7, this.SQUARE_SIZE - BORDER_THICKNESS * 2+7, CORNER_RADIUS);
+    shader.fill({ color: "black", alpha: 0.51 });
+    container.addChild(shader);
 
-            
-            container.x = square.position.x;
-            container.y = square.position.y;
-            
-            this.squares.push(container as any); 
-            this.squaresContainer.addChild(container);
-        });
+    // Use the specific color for the start square, otherwise use the default dark purple
+    const bgColor = square.isStart ? START_SQUARE_COLOR : DARK_PURPLE;
+    backgroundBox.fill(bgColor);
+    container.addChild(backgroundBox);
 
+    let txt = square.isStart 
+        ? "START" 
+        : "+" + square.prize?.prizeValue.toString();
+    
+    let text = new Text({
+        text: txt,
+        style: {
+            fill: 0xffd700, 
+            fontSize: square.isStart || square.isBonus ? 14 : 18,
+            fontFamily: "Arial",
+            fontWeight: 'bold',
+            align: "center",
+            stroke: { color: 0x000000, width: 3 }, 
+        },
+    });
+    text.x = this.SQUARE_SIZE / 2;
+    text.y = this.SQUARE_SIZE / 2;
+    text.anchor.set(0.5);
+    container.addChild(text);
+
+    
+    container.x = square.position.x;
+    container.y = square.position.y;
+    
+    this.squares.push(container as any); 
+    this.squaresContainer.addChild(container);
+});
 }
 }
