@@ -1,7 +1,7 @@
 # Pixi.js Board Game
 
 A fun, interactive board game built with Pixi.js, TypeScript, and Vite. Players spin dice to move around the board, collect prizes, and enter exciting bonus rounds. The game features smooth animations, sound effects, and a dynamic UI.
-# Bonus round activates on 5th square there is 
+# Bonus round activates on 5th square there is screen of it
 ![bonus round screen](/assets/images/defaults/screenshot.png) 
 
 ## Features
