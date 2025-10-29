@@ -31,13 +31,13 @@ export default class MockBackendService{
     ];
      private bonusPrizes:Prize[]= [
         {position: 0, prizeValue: 1000, prizeName: "goldStar"},
-        {position: 1, prizeValue: 1000, prizeName: "goldStar"},
+        {position: 1, prizeValue: 1000, prizeName: "coins"},
         {position: 2, prizeValue: 500, prizeName: "silverStar"},
-        {position: 3, prizeValue: 250, prizeName: "bronzeStar"},
+        {position: 3, prizeValue: 250, prizeName: "chest"},
         {position: 4, prizeValue: 200, prizeName: "bronzeHeart2"},
         {position: 5, prizeValue: 25, prizeName: "bag"},
         {position: 6, prizeValue: 100, prizeName: "chest2"},
-        {position: 7, prizeValue: 500, prizeName: "chest"},
+        {position: 7, prizeValue: 500, prizeName: "bronzeStar"},
         {position: 8, prizeValue: 100, prizeName: "coins"},
         {position: 9, prizeValue: 100, prizeName: "silverStar"},
         {position: 10, prizeValue: 500, prizeName: "chest"},
@@ -45,7 +45,7 @@ export default class MockBackendService{
         {position: 12, prizeValue: 250, prizeName: "bronzeStar"},
         {position: 13, prizeValue: 500, prizeName: "silverStar"},
         {position: 14, prizeValue: 1000, prizeName: "goldStar"},
-        {position: 15, prizeValue: 1000, prizeName: "goldStar"},
+        {position: 15, prizeValue: 1000, prizeName: "coins"},
     ];
     getinitialData():inititalDataResponse{
 
