@@ -7,7 +7,10 @@ export interface MakeSpinRequest{
     betAmount: number,
     isFreeSpin: boolean,
 }
+
 export interface MakeSpinResponse{
     rollResult: number,
     newBalance: number,
+    die1: number, 
+    die2: number, 
 }

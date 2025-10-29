@@ -1,0 +1,40 @@
+{
+  "frames": {
+    "dice1.png": {
+      "frame": { "x": 0, "y": 0, "w": 100, "h": 100 },
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 100, "h": 100 },
+      "sourceSize": { "w": 100, "h": 100 }
+    },
+    "dice2.png": {
+      "frame": { "x": 100, "y": 0, "w": 100, "h": 100 },
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 100, "h": 100 },
+      "sourceSize": { "w": 100, "h": 100 }
+    },
+    "dice3.png": {
+      "frame": { "x": 200, "y": 0, "w": 100, "h": 100 },
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 100, "h": 100 },
+      "sourceSize": { "w": 100, "h": 100 }
+    },
+    "dice4.png": {
+      "frame": { "x": 300, "y": 0, "w": 100, "h": 100 },
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 100, "h": 100 },
+      "sourceSize": { "w": 100, "h": 100 }
+    },
+    "dice5.png": {
+      "frame": { "x": 400, "y": 0, "w": 100, "h": 100 },
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 100, "h": 100 },
+      "sourceSize": { "w": 100, "h": 100 }
+    },
+    "dice6.png": {
+      "frame": { "x": 500, "y": 0, "w": 100, "h": 100 },
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 100, "h": 100 },
+      "sourceSize": { "w": 100, "h": 100 }
+    }
+  },
+  "meta": {
+    "image": "dice_spritesheet.png",
+    "format": "RGBA8888",
+    "size": { "w": 600, "h": 100 },
+    "scale": "1"
+  }
+}

@@ -60,16 +60,15 @@ export default class MockBackendService{
     }
     makeSpin(): MakeSpinResponse {
         const die1 = Math.floor(Math.random() * 6) + 1;
-        const die2 = Math.floor(Math.random() * 6) + 1;
-        const rollResult = die1 + die2;
+    const die2 = Math.floor(Math.random() * 6) + 1;
+    const rollResult = die1 + die2;
 
-    
-       
-
-        return {
-            rollResult,
-            newBalance: this.balance,
-        };
+    return {
+        rollResult,
+        newBalance: this.balance,
+        die1,
+        die2,
+    };
     }
 
 }
