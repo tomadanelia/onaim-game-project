@@ -1,5 +1,6 @@
+
 import * as PIXI from 'pixi.js';
-import { Text } from 'pixi.js';
+import { Sprite, Text } from 'pixi.js';
 import type { BoardSquare, Prize } from '../types/gameTypes';
 
 export default class Board extends PIXI.Container {
@@ -81,26 +82,57 @@ export default class Board extends PIXI.Container {
             innerGlow.stroke({ width: 1, color: "white", alpha: 0.6 }); 
             container.addChild(innerGlow);
 
-            let txt = square.isStart 
-                ? "START" 
-                : "$" + square.prize?.prizeValue.toString();
-            
-            let text = new Text({
-                text: txt,
-                style: {
-                    fill: 0xffd700, 
-                    fontSize: square.isStart || square.isBonus ? 18 : 18,
-                    fontFamily: "Arial",
-                    fontWeight: 'bold',
-                    align: "center",
-                    stroke: { color: 0x000000, width: 2 }, 
-                },
-            });
-            text.x = this.SQUARE_SIZE / 2;
-            text.y = this.SQUARE_SIZE / 2;
-            text.anchor.set(0.5);
-            container.addChild(text);
+            if (square.isStart) {
+                const text = new Text({
+                    text: 'START',
+                    style: {
+                        fill: 0xffd700, 
+                        fontSize: 18,
+                        fontFamily: "Arial",
+                        fontWeight: 'bold',
+                        align: "center",
+                        stroke: { color: 0x000000, width: 2 }, 
+                    },
+                });
+                text.x = this.SQUARE_SIZE / 2;
+                text.y = this.SQUARE_SIZE / 2;
+                text.anchor.set(0.5);
+                container.addChild(text);
+            } else if (square.prize) {
+                const prizeName = square.prize.prizeName;
+                try {
+                    const texture = PIXI.Assets.get(prizeName);
+                    if (texture) {
+                        const prizeSprite = new Sprite(texture);
+                        prizeSprite.anchor.set(0.5);
+                        prizeSprite.width = this.SQUARE_SIZE * 0.6;
+                        prizeSprite.height = this.SQUARE_SIZE * 0.6;
+                        prizeSprite.x = this.SQUARE_SIZE / 2;
+                        prizeSprite.y = (this.SQUARE_SIZE / 2) - 10;
+                        container.addChild(prizeSprite);
+                    } else {
+                        console.warn(`Texture not found for prize: ${prizeName}`);
+                    }
+                } catch (e) {
+                    console.error(`Error getting texture for ${prizeName}:`, e);
+                }
 
+                const text = new Text({
+                    text: "$" + square.prize.prizeValue.toString(),
+                    style: {
+                        fill: 0xffd700, 
+                        fontSize: 18,
+                        fontFamily: "Arial",
+                        fontWeight: 'bold',
+                        align: "center",
+                        stroke: { color: 0x000000, width: 2 }, 
+                    },
+                });
+                text.x = this.SQUARE_SIZE / 2;
+                text.y = this.SQUARE_SIZE - 20+5;
+                text.anchor.set(0.5);
+                container.addChild(text);
+            }
             
             container.x = square.position.x;
             container.y = square.position.y;
@@ -171,26 +203,57 @@ export default class Board extends PIXI.Container {
     backgroundBox.fill(bgColor);
     container.addChild(backgroundBox);
 
-    let txt = square.isStart 
-        ? "START" 
-        : "+" + square.prize?.prizeValue.toString();
-    
-    let text = new Text({
-        text: txt,
-        style: {
-            fill: 0xffd700, 
-            fontSize: square.isStart  ? 14 : 18,
-            fontFamily: "Arial",
-            fontWeight: 'bold',
-            align: "center",
-            stroke: { color: 0x000000, width: 3 }, 
-        },
-    });
-    text.x = this.SQUARE_SIZE / 2;
-    text.y = this.SQUARE_SIZE / 2;
-    text.anchor.set(0.5);
-    container.addChild(text);
+    if (square.isStart) {
+        const text = new Text({
+            text: 'START',
+            style: {
+                fill: 0xffd700, 
+                fontSize: 14,
+                fontFamily: "Arial",
+                fontWeight: 'bold',
+                align: "center",
+                stroke: { color: 0x000000, width: 3 }, 
+            },
+        });
+        text.x = this.SQUARE_SIZE / 2;
+        text.y = this.SQUARE_SIZE / 2;
+        text.anchor.set(0.5);
+        container.addChild(text);
+    } else if (square.prize) {
+        const prizeName = square.prize.prizeName;
+        try {
+            const texture = PIXI.Assets.get(prizeName);
+            if (texture) {
+                const prizeSprite = new Sprite(texture);
+                prizeSprite.anchor.set(0.5);
+                prizeSprite.width = this.SQUARE_SIZE * 0.6;
+                prizeSprite.height = this.SQUARE_SIZE * 0.6;
+                prizeSprite.x = this.SQUARE_SIZE / 2;
+                prizeSprite.y = (this.SQUARE_SIZE / 2) - 10;
+                container.addChild(prizeSprite);
+            } else {
+                console.warn(`Texture not found for prize (bonus): ${prizeName}`);
+            }
+        } catch (e) {
+            console.error(`Error getting texture for ${prizeName} (bonus):`, e);
+        }
 
+        const text = new Text({
+            text: `+${square.prize.prizeValue.toString()}`,
+            style: {
+                fill: 0xffd700, 
+                fontSize: 18,
+                fontFamily: "Arial",
+                fontWeight: 'bold',
+                align: "center",
+                stroke: { color: 0x000000, width: 3 }, 
+            },
+        });
+        text.x = this.SQUARE_SIZE / 2;
+        text.y = this.SQUARE_SIZE - 20;
+        text.anchor.set(0.5);
+        container.addChild(text);
+    }
     
     container.x = square.position.x;
     container.y = square.position.y;

@@ -66,20 +66,20 @@ async loadAssets(): Promise<void> {
     this.app.stage.addChild(loadingText);
     const assets = [
   { alias: 'bag', src: '/assets/images/defaults/bag.png' },
-  { alias: 'bronzeCoin', src: '/assets/images/defaults/bronzeCoin.png' },
+  { alias: 'bronzeCoin', src: '/assets/images/defaults/bronzeCoinl.png' },
   { alias: 'bronzeHeart2', src: '/assets/images/defaults/bronzeHeart2.png' },
-  { alias: 'bronzeStar', src: '/assets/images/defaults/bronzeStar.png' },
+  { alias: 'bronzeStar', src: '/assets/images/defaults/bronzeStarl.png' },
   { alias: 'chest', src: '/assets/images/defaults/chest.png' },
   { alias: 'chest2', src: '/assets/images/defaults/chest2.png' },
-  { alias: 'coin', src: '/assets/images/defaults/coin.png' },
+  { alias: 'coin', src: '/assets/images/defaults/goldCoinl.png' },
   { alias: 'coins', src: '/assets/images/defaults/coins.png' },
-  { alias: 'goldCoin', src: '/assets/images/defaults/goldCoin.png' },
+  { alias: 'goldCoin', src: '/assets/images/defaults/goldCoinl.png' },
   { alias: 'goldHeart', src: '/assets/images/defaults/goldHeart.png' },
   { alias: 'goldHeart1', src: '/assets/images/defaults/goldHeart1.png' },
-  { alias: 'goldStar', src: '/assets/images/defaults/goldStar.png' },
-  { alias: 'silverCoin', src: '/assets/images/defaults/silverCoin.png' },
-  { alias: 'silverHeart', src: '/assets/images/defaults/silverHeart.png' },
-  { alias: 'silverStar', src: '/assets/images/defaults/silverStar.png' },
+  { alias: 'goldStar', src: '/assets/images/defaults/goldStarl.png' },
+  { alias: 'silverCoin', src: '/assets/images/defaults/silverCoinl.png' },
+  { alias: 'silverHeart', src: '/assets/images/defaults/silverHeartl.png' },
+  { alias: 'silverStar', src: '/assets/images/defaults/silverStarl.png' },
   { alias: 'player', src: '/assets/images/defaults/player.png' },
 ];
 
