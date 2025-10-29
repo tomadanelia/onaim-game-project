@@ -7,7 +7,6 @@ import Board from './Board';
 import { BackgroundBoard } from '../background';
 import  Player from './Player';
 import { gameState } from '../services/gameState';
-import type { MakeSpinRequest } from '../types/apiTypes';
 import type { Prize } from '../types/gameTypes';
 import { soundManager } from '../services/soundManager';
 export class GameApp {
@@ -21,6 +20,8 @@ export class GameApp {
     private decreaseBetBtn!: HTMLButtonElement;
     private increaseBetBtn!: HTMLButtonElement;
     private back!:BackgroundBoard;
+    private diceContainer: PIXI.Container | null = null; // <-- ADD THIS LINE
+
     betSelector!: HTMLElement | null;
     async init(): Promise<void> {
         this.app = new PIXI.Application();
@@ -82,6 +83,12 @@ async loadAssets(): Promise<void> {
   { alias: 'silverHeart', src: '/assets/images/defaults/silverHeartl.png' },
   { alias: 'silverStar', src: '/assets/images/defaults/silverStarl.png' },
   { alias: 'player', src: '/assets/images/defaults/player.png' },
+{ alias: 'dice1', src: '/assets/images/defaults/standard_die1.png' },
+{ alias: 'dice2', src: '/assets/images/defaults/standard_die2.png' },
+{ alias: 'dice3', src: '/assets/images/defaults/standard_die3.png' },
+{ alias: 'dice4', src: '/assets/images/defaults/standard_die4.png' },
+{ alias: 'dice5', src: '/assets/images/defaults/standard_die5.png' },
+{ alias: 'dice6', src: '/assets/images/defaults/standard_die6.png' },
 ];
 
 
@@ -165,6 +172,15 @@ async loadAssets(): Promise<void> {
         this.updateDisplay();
     }
 
+private flashBalanceColor(isIncrease: boolean): void {
+    const className = isIncrease ? 'balance-increase' : 'balance-decrease';
+    
+    this.balanceEl.classList.add(className);
+    
+    setTimeout(() => {
+        this.balanceEl.classList.remove(className);
+    }, 500);
+}
     updateDisplay(): void {
         this.balanceEl.textContent = gameState.getBalance().toString();
 
@@ -217,36 +233,41 @@ this.betSelector = document.querySelector(".bet-selector") as HTMLElement;
 
 
    
-        async handleSpin(): Promise<void> {
-        await soundManager.playAndWait('roll');
-        const balance = gameState.getBalance();
-        const betOptions = gameConfig.getBetOptions()[gameState.getSelectedBetIndex()];
-        if (balance < betOptions.cost) {
-        alert('Insufficient balance for this bet.');
-            return;
-        }
-        const isFreeSpins= gameState.isBonusMode() && gameState.getFreeSpinsRemaining()>0;
-        if (isFreeSpins){
-            this.disableSpinButton();
-            const result= await apiService.makeSpin();
-            await this.movePlayer(result.rollResult);
-        }
-        else{
-            const req: MakeSpinRequest={
-                betAmount: betOptions.cost,
-                isFreeSpin: isFreeSpins
-            };
-            const result= await apiService.makeSpin();
-            let bal=gameState.getBalance()-req.betAmount;
-            gameState.setBalance(bal);
-            await this.movePlayer(result.rollResult);
-            console.log('Spin result:', result.rollResult);
-            this.enableSpinButton();
-        }
-       this.updateDisplay();
 
-        
+async handleSpin(): Promise<void> {
+    await soundManager.playAndWait('roll');
+    const balance = gameState.getBalance();
+    const betOptions = gameConfig.getBetOptions()[gameState.getSelectedBetIndex()];
+
+    if (!gameState.isBonusMode() && balance < betOptions.cost) {
+        alert('Insufficient balance for this bet.');
+        return;
     }
+ if (this.diceContainer) {
+        this.diceContainer.destroy();
+        this.diceContainer = null;
+    }
+    this.disableSpinButton();
+    const result = await apiService.makeSpin();
+
+     this.showDiceRoll(result.die1, result.die2);
+
+    const isFreeSpins = gameState.isBonusMode() && gameState.getFreeSpinsRemaining() > 0;
+    if (!isFreeSpins) {
+        this.flashBalanceColor(false); 
+        let bal = gameState.getBalance() - betOptions.cost;
+        gameState.setBalance(bal);
+    }
+    
+    await this.movePlayer(result.rollResult);
+    console.log('Spin result:', result.rollResult);
+
+    if (!gameState.isBonusMode()) {
+        this.enableSpinButton();
+    }
+
+    this.updateDisplay();
+}
 
     private handleResize(): void {
     this.app.renderer.resize(window.innerWidth, window.innerHeight);
@@ -308,6 +329,12 @@ async movePlayer(steps: number): Promise<void> {
     }
     let winAmount= prize ? prize.prizeValue : 0;
     const mul = gameConfig.getBetOptions()[gameState.getSelectedBetIndex()].multiplier;
+    let totalWin = winAmount * mul;
+
+    if (totalWin > 0) {
+        this.flashBalanceColor(true);
+    }
+
     let bal=gameState.getBalance()+winAmount*mul;
     gameState.setBalance(bal);
     
@@ -338,7 +365,7 @@ async movePlayer(steps: number): Promise<void> {
         
     }
     async playFreeSpins(): Promise<void> {
-    for (let i = gameState.getFreeSpinsRemaining(); i >= 0; i--) {
+    for (let i = gameState.getFreeSpinsRemaining(); i > 0; i--) {
         await new Promise(resolve => setTimeout(resolve, 1000));
         await this.handleSpin();
         gameState.decrementFreeSpin();
@@ -346,4 +373,38 @@ async movePlayer(steps: number): Promise<void> {
     this.exitBonusMode();
 }
 
+private showDiceRoll(die1: number, die2: number): void {
+    const diceContainer = new PIXI.Container();
+    this.diceContainer = diceContainer; 
+    
+    const texture1 = PIXI.Assets.get(`dice${die1}`);
+    const texture2 = PIXI.Assets.get(`dice${die2}`);
+
+    const dieSprite1 = new PIXI.Sprite(texture1);
+    const dieSprite2 = new PIXI.Sprite(texture2);
+
+    dieSprite1.anchor.set(0.5);
+    dieSprite2.anchor.set(0.5);
+
+    
+    dieSprite1.x = -20; 
+    dieSprite2.x = 20;  
+    
+    diceContainer.addChild(dieSprite1, dieSprite2);
+    
+    diceContainer.x = this.app.screen.width / 2;
+    diceContainer.y = (this.app.screen.height / 2) + 40; 
+    diceContainer.scale.set(0); 
+    diceContainer.zIndex = 1000;
+    
+    this.app.stage.addChild(diceContainer);
+
+    
+    gsap.to(diceContainer.scale, { 
+        x: 1, 
+        y: 1, 
+        duration: 0.5, 
+        ease: 'back.out' 
+    });
+}
 }
