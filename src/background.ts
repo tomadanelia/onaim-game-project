@@ -134,7 +134,7 @@ export class BackgroundBoard {
             
             this.shape.circle(this.centerX, this.centerY, this.shapeSize);
             this.shape.fill(0x2d7a2d);
-            this.shape.stroke({ width: 3, color: 0x1a5c1a });
+            this.shape.stroke({ width: 5, color: 0x1a5c1a });
             const style = new TextStyle({
     fontFamily: "Gill Sans, Gill Sans MT, Calibri, Trebuchet MS, sans-serif",
     fontSize: 40,
