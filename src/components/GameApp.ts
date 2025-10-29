@@ -276,6 +276,10 @@ async handleSpin(): Promise<void> {
         this.board.x = (this.app.screen.width - this.board.width) / 2;
         this.board.y = (this.app.screen.height - this.board.height) / 2;
     }
+     if (this.diceContainer) {
+        this.diceContainer.x = this.app.screen.width / 2;
+        this.diceContainer.y = (this.app.screen.height / 2) + 40; 
+    }
      if (this.back) {
         this.back.onResize();
     }
