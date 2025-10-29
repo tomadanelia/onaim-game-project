@@ -9,6 +9,7 @@ import  Player from './Player';
 import { gameState } from '../services/gameState';
 import type { MakeSpinRequest } from '../types/apiTypes';
 import type { Prize } from '../types/gameTypes';
+import { soundManager } from '../services/soundManager';
 export class GameApp {
     private app!: PIXI.Application;
     private board!:Board;
@@ -213,8 +214,11 @@ this.betSelector = document.querySelector(".bet-selector") as HTMLElement;
     const freeSpinsContainer = document.getElementById('free-spins-display')!;
     freeSpinsContainer.style.display="none";
     }
+
+
    
         async handleSpin(): Promise<void> {
+        await soundManager.playAndWait('roll');
         const balance = gameState.getBalance();
         const betOptions = gameConfig.getBetOptions()[gameState.getSelectedBetIndex()];
         if (balance < betOptions.cost) {
@@ -266,7 +270,6 @@ async movePlayer(steps: number): Promise<void> {
     for (let i = 1; i <= steps; i++) {
         const nextPosIndex = (startPosIndex + i) % 16; 
         const nextSquarePosition = this.board.getSquarePosition(nextPosIndex);
-
         timeline.to(this.player, {
             x: nextSquarePosition.x,
             y: nextSquarePosition.y,
@@ -294,6 +297,7 @@ async movePlayer(steps: number): Promise<void> {
 }
 
     handlePrizeCollection():void{
+    soundManager.play("collect");
     let pos= gameState.getCurrentPosition();
     let layout= this.board.getLayout();
     let square= layout[pos];
@@ -320,6 +324,7 @@ async movePlayer(steps: number): Promise<void> {
 
     }
     enterBonusMode():void{
+        soundManager.play('bonus');
         const freeSpins= gameConfig.getFreeSpinsCount();
         gameState.enterBonusMode(freeSpins);
         const bonusPrizes:Prize[] = gameConfig.getBonusPrizes();

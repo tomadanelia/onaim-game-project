@@ -24,7 +24,7 @@ export default class MockBackendService{
         {position: 9, prizeValue: 15, prizeName: "silverStar"},
         {position: 10, prizeValue: 5, prizeName: "bag"},
         {position: 11, prizeValue: 30, prizeName: "bronzeStar"},
-        {position: 12, prizeValue: 80, prizeName: "silverStar"},
+        {position: 12, prizeValue: 50, prizeName: "coins"},
         {position: 13, prizeValue: 50, prizeName: "goldStar"},
         {position: 14, prizeValue: 70, prizeName: "silverHeart"},
         {position: 15, prizeValue: 30, prizeName: "coins"},

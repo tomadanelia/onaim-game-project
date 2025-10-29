@@ -10,9 +10,9 @@ class SoundManager {
 
     loadSounds(): void {
         const soundConfigs = [
-            { name: 'click', src: '/assets/sounds/click.wav' },
+            { name: 'collect', src: '/assets/sounds/click.wav' },
             { name: 'roll', src: '/assets/sounds/roll.wav' },
-            { name: 'collect', src: '/assets/sounds/collect.wav' },
+            { name: 'click', src: '/assets/sounds/collect.wav' },
             { name: 'bonus', src: '/assets/sounds/bonus.wav' },
         ];
 
@@ -31,8 +31,8 @@ class SoundManager {
         src: ['/assets/sounds/roll.mp3.wav'],
         volume: 0.5,
         sprite: {
-            roll1: [0, 1000],
-         roll2: [2000, 3000],
+            roll1: [400, 800],
+         roll2: [2000, 2100],
 
         }
     });
@@ -60,6 +60,27 @@ class SoundManager {
             sound.stop();
         }
     }
+    async playAndWait(soundName: string): Promise<void> {
+  if (this.isMuted) return;
+
+  const sound = this.sounds.get(soundName);
+  if (!sound) return;
+
+  return new Promise<void>((resolve) => {
+    let id: number | undefined;
+
+    if (soundName === 'roll') {
+      const rolls = ['roll1', 'roll2'];
+      const random = rolls[Math.floor(Math.random() * rolls.length)];
+      id = sound.play(random);
+    } else {
+      id = sound.play();
+    }
+
+    sound.once('end', () => resolve(), id);
+  });
+}
+
 
     toggleMute(): void {
         this.isMuted = !this.isMuted;
