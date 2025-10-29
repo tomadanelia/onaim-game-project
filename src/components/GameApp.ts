@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
 import {Text} from 'pixi.js'
+import gsap from 'gsap';
 import { apiService } from '../services/apiService';
 import { gameConfig } from '../config/gameConfig';
 import Board from './Board';
@@ -249,14 +250,43 @@ this.betSelector = document.querySelector(".bet-selector") as HTMLElement;
         this.back.onResize();
     }
 }
-    async movePlayer(steps:number):Promise<void>{
-        gameState.movePlayer(steps);
-        this.handlePrizeCollection();
-        const newPos= gameState.getCurrentPosition();
-        const targetPos= this.board.getSquarePosition(newPos);
-        this.player.setPosition(targetPos.x, targetPos.y);
-        this.player.setCurrentSquareIndex(newPos);
+
+async movePlayer(steps: number): Promise<void> {
+    this.disableSpinButton();
+
+    const startPosIndex = gameState.getCurrentPosition();
+
+    const timeline = gsap.timeline();
+
+    for (let i = 1; i <= steps; i++) {
+        const nextPosIndex = (startPosIndex + i) % 16; 
+        const nextSquarePosition = this.board.getSquarePosition(nextPosIndex);
+
+        timeline.to(this.player, {
+            x: nextSquarePosition.x,
+            y: nextSquarePosition.y,
+            duration: 0.3, 
+            ease: 'power1.inOut',
+        });
     }
+
+    await new Promise<void>(resolve => {
+        timeline.eventCallback('onComplete', () => {
+            
+            gameState.movePlayer(steps);
+            this.player.setCurrentSquareIndex(gameState.getCurrentPosition());
+
+            this.handlePrizeCollection();
+            this.updateDisplay(); 
+
+            if (!gameState.isBonusMode()) {
+                this.enableSpinButton();
+            }
+
+            resolve();
+        });
+    });
+}
 
     handlePrizeCollection():void{
     let pos= gameState.getCurrentPosition();
