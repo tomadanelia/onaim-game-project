@@ -50,9 +50,9 @@ export default class Board extends PIXI.Container {
                 8
             );
             
-            let bgColor = 0x2d7a2d; 
+            let bgColor = "#2d7a2d"; 
              if (square.isStart) {
-                bgColor = 0x1a5c1a; 
+                bgColor = "#226822ff"; 
             }
             
             innerSquare.fill(bgColor);
@@ -78,7 +78,7 @@ export default class Board extends PIXI.Container {
                 this.SQUARE_SIZE - borderWidth * 2, 
                 8
             );
-            innerGlow.stroke({ width: 2, color: "white", alpha: 0.6 }); 
+            innerGlow.stroke({ width: 1, color: "white", alpha: 0.6 }); 
             container.addChild(innerGlow);
 
             let txt = square.isStart 
@@ -131,14 +131,13 @@ export default class Board extends PIXI.Container {
            square.prize=prizes[i];
     });
     this.layout.forEach((square) => {
-    // --- Style Configuration ---
-    const BORDER_THICKNESS = 8; // Thickness of the lighter border (7-9px range)
+    const BORDER_THICKNESS = 8; 
     const CORNER_RADIUS = 15;   // How rounded the corners are
 
     // --- Colors ---
     const LIGHT_PURPLE = "#9e2ec3ff"; 
     const DARK_PURPLE = "#7f0aa6ff";   
-    const START_SQUARE_COLOR = 0x4a1a5c; 
+    const START_SQUARE_COLOR = "#6a0a89ff";; 
 
    
     const container = new PIXI.Container();
@@ -163,7 +162,7 @@ export default class Board extends PIXI.Container {
         innerCornerRadius
     ).stroke({ width: 1, color: "white", alpha: 0.6 });
     const shader = new PIXI.Graphics();
-    shader.roundRect(4, 4.5,this.SQUARE_SIZE - BORDER_THICKNESS * 2+7, this.SQUARE_SIZE - BORDER_THICKNESS * 2+7, CORNER_RADIUS);
+    shader.roundRect(3.5, 3.5,this.SQUARE_SIZE - BORDER_THICKNESS * 2+7, this.SQUARE_SIZE - BORDER_THICKNESS * 2+7, CORNER_RADIUS);
     shader.fill({ color: "black", alpha: 0.51 });
     container.addChild(shader);
 
@@ -180,7 +179,7 @@ export default class Board extends PIXI.Container {
         text: txt,
         style: {
             fill: 0xffd700, 
-            fontSize: square.isStart || square.isBonus ? 14 : 18,
+            fontSize: square.isStart  ? 14 : 18,
             fontFamily: "Arial",
             fontWeight: 'bold',
             align: "center",

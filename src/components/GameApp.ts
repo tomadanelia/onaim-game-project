@@ -30,11 +30,14 @@ export class GameApp {
             backgroundColor: 0x1a1a2e, 
             resolution: window.devicePixelRatio || 1,
             autoDensity: true,
+              antialias: true, 
+
         });
 
         document.body.appendChild(this.app.canvas);
         this.back = new BackgroundBoard(this.app);
         console.log('Pixi Application initialized');
+        
 
     }
 
@@ -127,6 +130,7 @@ async loadAssets(): Promise<void> {
         this.updateDisplay();
         window.addEventListener('resize', () => this.handleResize());
 
+
     }
 
 
@@ -203,6 +207,13 @@ this.betSelector = document.querySelector(".bet-selector") as HTMLElement;
         this.betSelector = document.querySelector(".bet-selector") as HTMLElement;
                 this.betSelector.style.display = 'flex';
 
+    }
+    private changeSpinButton(){
+        let spinBtn= this.spinBtn as HTMLElement;
+        if (gameState.isBonusMode()){
+            spinBtn.style.backgroundColor="#a812a8ff";
+        }
+        
     }
     disableFreeSpins(){
     const freeSpinsContainer = document.getElementById('free-spins-display')!;
@@ -319,6 +330,7 @@ async movePlayer(steps: number): Promise<void> {
         this.back.toggleBonusRound(true);
         this.disableBettingButton();
         this.playFreeSpins();
+        this.changeSpinButton();
         
         
     }
