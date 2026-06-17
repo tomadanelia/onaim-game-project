@@ -6,12 +6,9 @@ class ApiService {
     private isMockMode: boolean;
     private backendService: MockBackendService | RealBackendService;
     constructor() {
-        window.location.search==="?mock=true"?this.isMockMode=true:this.isMockMode=false;
-        if (this.isMockMode) {
-            this.backendService = new MockBackendService();
-        } else {
-            this.backendService = new RealBackendService();
-        }
+    // Force mock mode to true for hosting purposes
+    this.isMockMode = true;
+    this.backendService = new MockBackendService();
     }
     async getinitialData():Promise<inititalDataResponse> {
         if (this.isMockMode) {
